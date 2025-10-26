@@ -11,11 +11,6 @@ export const navbarLinks = [
                 icon: Home,
                 path: "/dashboard",
             },
-            // {
-            //     label: "Reports",
-            //     icon: NotepadText,
-            //     path: "/dashboard/reports",
-            // },
             {
                 label: "Users management",
                 icon: Users,
