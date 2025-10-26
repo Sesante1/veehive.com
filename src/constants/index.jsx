@@ -1,4 +1,4 @@
-import { Car, Home, NotepadText, Settings, UserCheck, Users } from "lucide-react";
+import { Car, Home, List, NotepadText, Settings, UserCheck, Users } from "lucide-react";
 
 import ProfileImage from "@/assets/profile-image.jpg";
 
@@ -28,36 +28,21 @@ export const navbarLinks = [
             },
         ],
     },
-    // {
-    //     title: "Users",
-    //     links: [
-    //         {
-    //             label: "Pending users",
-    //             icon: Users,
-    //             path: "/dashboard/pendingUsers",
-    //         },
-    //         {
-    //             label: "Verified users",
-    //             icon: UserCheck,
-    //             path: "/dashboard/verifiedUsers",
-    //         },
-    //     ],
-    // },
-    // {
-    //     title: "Cars",
-    //     links: [
-    //         {
-    //             label: "Pending Cars",
-    //             icon: Car,
-    //             path: "/dashboard/pendingCars",
-    //         },
-    //         {
-    //             label: "Verified Cars",
-    //             icon: Car,
-    //             path: "/dashboard/verifiedCars",
-    //         },
-    //     ],
-    // },
+    {
+        title: "Report",
+        links: [
+            {
+                label: "Reported Car",
+                icon: List,
+                path: "/dashboard/settings",
+            },
+            {
+                label: "Reported Users",
+                icon: List,
+                path: "/dashboard/settings",
+            },
+        ],
+    },
     {
         title: "Settings",
         links: [
