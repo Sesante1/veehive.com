@@ -1,4 +1,3 @@
-// AdminCarManagement.tsx - Complete Car Management System
 import React, { useState, useMemo, useCallback } from "react";
 import {
     MoreVertical,
@@ -19,11 +18,11 @@ import {
     RefreshCw,
     AlertCircle,
     FileText,
+    Search,
 } from "lucide-react";
 import { useCars } from "../../hooks/useCars";
 import { carService } from "../../services/carService";
 
-// StatCard Component
 const StatCard = ({ title, count, icon, color = "blue", active, onClick }) => {
     const colors = {
         blue: "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400",
@@ -49,7 +48,6 @@ const StatCard = ({ title, count, icon, color = "blue", active, onClick }) => {
 };
 
 const CarManagement = () => {
-    // 🔥 OPTIMIZATION: Use pre-calculated stats from hook
     const { cars: allCars, loading, error, stats } = useCars();
 
     const [filterStatus, setFilterStatus] = useState("all");
@@ -63,22 +61,38 @@ const CarManagement = () => {
     const [carToReject, setCarToReject] = useState(null);
     const [carToSuspend, setCarToSuspend] = useState(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
 
-    // 🔥 OPTIMIZATION: Use useMemo for filtering
     const cars = useMemo(() => {
-        if (filterStatus === "all") {
-            return allCars.filter((c) => !c.isDeleted);
-        } else if (filterStatus === "pending") {
-            return allCars.filter((c) => c.status === "pending" && !c.isDeleted);
+        let filtered = allCars.filter((c) => !c.isDeleted);
+
+        // Apply status filter
+        if (filterStatus === "pending") {
+            filtered = filtered.filter((c) => c.status === "pending");
         } else if (filterStatus === "active") {
-            return allCars.filter((c) => c.status === "active" && !c.isDeleted);
+            filtered = filtered.filter((c) => c.status === "active");
         } else if (filterStatus === "rejected") {
-            return allCars.filter((c) => c.status === "rejected" && !c.isDeleted);
+            filtered = filtered.filter((c) => c.status === "rejected");
         } else if (filterStatus === "suspended") {
-            return allCars.filter((c) => c.status === "suspended" && !c.isDeleted);
+            filtered = filtered.filter((c) => c.status === "suspended");
         }
-        return allCars.filter((c) => !c.isDeleted);
-    }, [allCars, filterStatus]);
+
+        // ✅ ADDED: Apply search filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase().trim();
+            filtered = filtered.filter((car) => {
+                return (
+                    car.id?.toLowerCase().includes(query) ||
+                    car.make?.toLowerCase().includes(query) ||
+                    car.model?.toLowerCase().includes(query) ||
+                    car.ownerInfo?.displayName?.toLowerCase().includes(query) ||
+                    car.ownerInfo?.email?.toLowerCase().includes(query)
+                );
+            });
+        }
+
+        return filtered;
+    }, [allCars, filterStatus, searchQuery]); // ✅ ADDED: searchQuery to dependencies
 
     // 🔥 OPTIMIZATION: Use useCallback for handlers
     const handleRowClick = useCallback((car) => {
@@ -319,15 +333,57 @@ const CarManagement = () => {
                 />
             </div>
 
+            {/* ✅ ADDED: Search Bar */}
+            <div className="mb-6">
+                <div className="relative max-w-md">
+                    <Search
+                        size={20}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Search by ID, make, model, or owner..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-10 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                    />
+                    {searchQuery && (
+                        <button
+                            onClick={() => setSearchQuery("")}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                        >
+                            <X size={18} />
+                        </button>
+                    )}
+                </div>
+                {searchQuery && (
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        Found {cars.length} result{cars.length !== 1 ? "s" : ""} for "{searchQuery}"
+                    </p>
+                )}
+            </div>
+
             {/* Cars Table */}
             <div className="rounded-xl bg-white shadow-sm dark:bg-gray-800">
                 {cars.length === 0 ? (
                     <div className="p-12 text-center">
                         <CarIcon className="mx-auto mb-4 h-16 w-16 text-gray-400" />
-                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">No cars found</p>
+                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">{searchQuery ? "No cars found" : "No cars found"}</p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {filterStatus === "all" ? "No cars have been listed yet" : `No ${filterStatus} cars`}
+                            {searchQuery
+                                ? `No results match "${searchQuery}"`
+                                : filterStatus === "all"
+                                  ? "No cars have been listed yet"
+                                  : `No ${filterStatus} cars`}
                         </p>
+                        {searchQuery && (
+                            <button
+                                onClick={() => setSearchQuery("")}
+                                className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                            >
+                                Clear Search
+                            </button>
+                        )}
                     </div>
                 ) : (
                     <div className="overflow-x-auto">

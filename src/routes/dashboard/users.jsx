@@ -3,13 +3,6 @@ import { MoreVertical, X, Check, XCircle, Calendar, Mail, Phone, MapPin, Shield,
 import { useUsers } from "../../hooks/userUsers";
 import { userService } from "../../services/userService";
 
-/**
- * ROLE LOGIC:
- * - Driver's License verification = GUEST role (users who RENT cars - need license to drive)
- * - Identity/ID verification = HOSTER role (users who RENT OUT cars - just need ID)
- */
-
-// Main Component
 const UserManagement = () => {
     const { users: allUsers, loading } = useUsers();
     const [users, setUsers] = useState([]);

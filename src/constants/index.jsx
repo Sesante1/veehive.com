@@ -1,4 +1,4 @@
-import { Car, Home, List, NotepadText, Settings, UserCheck, Users } from "lucide-react";
+import { AlertCircle, Car, Home, List, NotepadText, Settings, UserCheck, Users } from "lucide-react";
 
 import ProfileImage from "@/assets/profile-image.jpg";
 
@@ -27,15 +27,15 @@ export const navbarLinks = [
         title: "Report",
         links: [
             {
-                label: "Reported Car",
-                icon: List,
-                path: "/dashboard/settings",
+                label: "Reported listing",
+                icon: AlertCircle,
+                path: "/dashboard/reports",
             },
-            {
-                label: "Reported Users",
-                icon: List,
-                path: "/dashboard/settings",
-            },
+            // {
+            //     label: "Reported Users",
+            //     icon: List,
+            //     path: "/dashboard/settings",
+            // },
         ],
     },
     {

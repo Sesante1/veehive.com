@@ -13,7 +13,7 @@ import LoginPage from "@/routes/auth/loginPage";
 function App() {
     const router = createBrowserRouter([
         {
-            path: "/login", 
+            path: "/login",
             element: <LoginPage />,
         },
         {
@@ -23,7 +23,7 @@ function App() {
                     to="/login"
                     replace
                 />
-            ), 
+            ),
         },
         {
             path: "/dashboard",
@@ -53,10 +53,10 @@ function App() {
                     path: "verifiedCars",
                     element: <VerifiedCars />,
                 },
-                {
-                    path: "settings",
-                    element: <h1 className="title">Settings</h1>,
-                },
+                // {
+                //     path: "settings",
+                //     element: <h1 className="title">Settings</h1>,
+                // },
             ],
         },
     ]);
