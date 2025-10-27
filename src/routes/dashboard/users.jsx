@@ -151,10 +151,10 @@ const UserManagement = () => {
 
     const handleSuspendSubmit = async () => {
         const days = parseInt(suspendDays);
-        if (!days || days <= 0) {
-            alert("Please enter a valid number of days");
-            return;
-        }
+        // if (!days || days <= 0) {
+        //     alert("Please enter a valid number of days");
+        //     return;
+        // }
         if (!suspendReason.trim()) {
             alert("Please provide a reason for suspension");
             return;
@@ -171,6 +171,21 @@ const UserManagement = () => {
         } catch (error) {
             console.error("Error suspending user:", error);
             alert("Failed to suspend user");
+        }
+    };
+
+    const handleReactivate = async (userId) => {
+        if (confirm("Are you sure you want to reactivate this user account?")) {
+            try {
+                await userService.reactivateUser(userId);
+                setActiveDropdown(null);
+                if (selectedUser?.id === userId) {
+                    setSelectedUser({ ...selectedUser, status: "active" });
+                }
+            } catch (error) {
+                console.error("Error reactivating user:", error);
+                alert("Failed to reactivate user");
+            }
         }
     };
 
@@ -488,26 +503,42 @@ const UserManagement = () => {
                                                             </button>
                                                         </>
                                                     )}
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleSuspendClick(user.id);
-                                                        }}
-                                                        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-orange-600 hover:bg-orange-50 dark:text-orange-400 dark:hover:bg-orange-900/30"
-                                                    >
-                                                        <Clock size={16} />
-                                                        Suspend User
-                                                    </button>
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleBanUser(user.id);
-                                                        }}
-                                                        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30"
-                                                    >
-                                                        <Ban size={16} />
-                                                        Ban User
-                                                    </button>
+                                                    {/* Show Reactivate for suspended or banned users */}
+                                                    {user.status === "suspended" || user.status === "banned" ? (
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleReactivate(user.id);
+                                                            }}
+                                                            className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
+                                                        >
+                                                            <Check size={16} />
+                                                            Reactivate Account
+                                                        </button>
+                                                    ) : (
+                                                        <>
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleSuspendClick(user.id);
+                                                                }}
+                                                                className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-orange-600 hover:bg-orange-50 dark:text-orange-400 dark:hover:bg-orange-900/30"
+                                                            >
+                                                                <Clock size={16} />
+                                                                Suspend User
+                                                            </button>
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleBanUser(user.id);
+                                                                }}
+                                                                className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30"
+                                                            >
+                                                                <Ban size={16} />
+                                                                Ban User
+                                                            </button>
+                                                        </>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>
@@ -880,7 +911,7 @@ const UserManagement = () => {
                         <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Suspend User</h3>
                         <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">Temporarily suspend user account:</p>
 
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                             <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Suspension Duration (days)</label>
                             <input
                                 type="number"
@@ -890,7 +921,7 @@ const UserManagement = () => {
                                 min="1"
                                 className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                             />
-                        </div>
+                        </div> */}
 
                         <div className="mb-4">
                             <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Reason for Suspension</label>

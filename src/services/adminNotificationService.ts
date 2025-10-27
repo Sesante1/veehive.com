@@ -120,7 +120,7 @@ export const notifyAccountSuspended = async (userId: string, userName: string, d
             recipientRole: "guest",
             type: "account_suspended",
             title: "⚠️ Account Suspended",
-            message: `Hi ${userName}, your account has been suspended for ${days} days. Reason: ${reason}. Suspension ends: ${suspendedUntil}`,
+            message: `Hi ${userName}, your account has been suspended. Reason: ${reason}.`,
             relatedType: "account",
             data: {
                 suspensionDays: days,

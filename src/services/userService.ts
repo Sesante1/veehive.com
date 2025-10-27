@@ -206,9 +206,9 @@ export const userService = {
 
     suspendUser: async (userId: string, days: number, reason: string) => {
         try {
-            if (!days || days <= 0) {
-                throw new Error("Days must be a positive number");
-            }
+            // if (!days || days <= 0) {
+            //     throw new Error("Days must be a positive number");
+            // }
             if (!reason || reason.trim() === "") {
                 throw new Error("Reason is required for suspension");
             }
@@ -237,9 +237,9 @@ export const userService = {
             await updateDoc(userRef, {
                 status: "suspended",
                 suspendedAt: Timestamp.now(),
-                suspendedUntil: Timestamp.fromDate(suspendedUntil),
+                // suspendedUntil: Timestamp.fromDate(suspendedUntil),
                 suspensionReason: reason.trim(),
-                suspensionDays: days,
+                // suspensionDays: days,
                 updatedAt: Timestamp.now(),
             });
 

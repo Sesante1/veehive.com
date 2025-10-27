@@ -21,7 +21,7 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
             )}
         >
             <div className="flex gap-x-3 p-3">
-                <img
+                {/* <img
                     src={logoLight}
                     alt="Logoipsum"
                     className="dark:hidden"
@@ -30,7 +30,7 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
                     src={logoDark}
                     alt="Logoipsum"
                     className="hidden dark:block"
-                />
+                /> */}
                 {!collapsed && <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">Veehive</p>}
             </div>
             <div className="flex w-full flex-col gap-y-4 overflow-y-auto overflow-x-hidden p-3 [scrollbar-width:_thin]">

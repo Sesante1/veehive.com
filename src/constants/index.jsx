@@ -38,16 +38,16 @@ export const navbarLinks = [
             // },
         ],
     },
-    {
-        title: "Settings",
-        links: [
-            {
-                label: "Settings",
-                icon: Settings,
-                path: "/dashboard/settings",
-            },
-        ],
-    },
+    // {
+    //     title: "Settings",
+    //     links: [
+    //         {
+    //             label: "Settings",
+    //             icon: Settings,
+    //             path: "/dashboard/settings",
+    //         },
+    //     ],
+    // },
 ];
 
 export const userGrowthData = [
